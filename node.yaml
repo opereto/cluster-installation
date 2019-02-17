@@ -1,0 +1,120 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: opereto-service-node
+spec:
+  serviceName: opereto-service
+  replicas: 3
+  selector:
+    matchLabels:
+      app: opereto-srv-cluster
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: opereto-srv-cluster
+    spec:
+      terminationGracePeriodSeconds: 300
+      containers:
+
+      - image: opereto/server:latest
+        name: opereto-server
+        ports:
+        - containerPort: 8080
+          name: http
+        resources:
+          requests:
+            memory: 16Gi
+          limits:
+            memory: 16Gi
+        env:
+        ## turn debug on by changing value to "1".
+        ## Please note that turning on debug modes significantly increases system logs volume and may decrease performance.
+        - name: OPERETO_CLUSTER_DEBUG
+          value: "0"
+        - name: OPERETO_CYCLE_DEBUG
+          value: "0"
+        - name: OPERETO_TESTPLAN_DEBUG
+          value: "0"
+        - name: OPERETO_REST_DEBUG
+          value: "0"
+        - name: OPERETO_ES_DEBUG
+          value: "0"
+
+        - name: OPERETO_POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+
+        ## Change this according to your elasticsearch operational requirements
+        - name: OPERETO_DB_SHARDS
+          value: "5"
+        - name: OPERETO_DB_REPLICA
+          value: "1"
+
+        ## cluster storage to keep shared services. Currently supported types are "local", "gs", "s3". See installation docs for more details.
+        - name: OPERETO_CLUSTER_STORAGE_TYPE
+          value: "s3"
+        - name: OPERETO_CLUSTER_STORAGE_NAME
+          valueFrom:
+            secretKeyRef:
+              name: node-cluster-storage
+              key: OPERETO_CLUSTER_STORAGE_NAME
+        - name: OPERETO_CLUSTER_STORAGE_S3_AK
+          valueFrom:
+            secretKeyRef:
+              name: node-cluster-storage
+              key: OPERETO_CLUSTER_STORAGE_S3_AK
+        - name: OPERETO_CLUSTER_STORAGE_S3_SK
+          valueFrom:
+            secretKeyRef:
+              name: node-cluster-storage
+              key: OPERETO_CLUSTER_STORAGE_S3_SK
+        - name: OPERETO_CLUSTER_SANDBOX_STORAGE_NAME
+          valueFrom:
+            secretKeyRef:
+              name: node-cluster-storage
+              key: OPERETO_CLUSTER_SANDBOX_STORAGE_NAME
+        - name: OPERETO_CLUSTER_SANDBOX_STORAGE_S3_AK
+          valueFrom:
+            secretKeyRef:
+              name: node-cluster-storage
+              key: OPERETO_CLUSTER_SANDBOX_STORAGE_S3_AK
+        - name: OPERETO_CLUSTER_SANDBOX_STORAGE_S3_SK
+          valueFrom:
+            secretKeyRef:
+              name: node-cluster-storage
+              key: OPERETO_CLUSTER_SANDBOX_STORAGE_S3_SK
+
+        volumeMounts:
+        - name: data
+          mountPath: /var/data
+
+      - image: redis:alpine
+        name: opereto-cache
+        ports:
+        - containerPort: 6379
+          name: redis
+        resources:
+          requests:
+            memory: 200Mi
+          limits:
+            memory: 500Mi
+        args: ["--appendonly", "yes", "--save", "900", "1", "--save", "30", "1"]
+        volumeMounts:
+        - name: data
+          mountPath: /data
+
+
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      storageClassName: node-ssd
+      resources:
+        requests:
+          storage: 200Gi
+

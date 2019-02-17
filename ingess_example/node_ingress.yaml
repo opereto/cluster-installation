@@ -1,0 +1,20 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: nginx
+  name: opereto-lb
+spec:
+  tls:
+  - hosts:
+    - ssl.example.com
+    secretName: clustersecret
+  rules:
+  - http:
+      paths:
+      - path: /
+        backend:
+          serviceName: opereto-web
+          servicePort: 8080
+    host: ssl.example.com
+
