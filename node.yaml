@@ -53,7 +53,8 @@ spec:
         - name: OPERETO_DB_REPLICA
           value: "1"
 
-        ## cluster storage to keep shared services. Currently supported types are "local", "gs", "s3". See installation docs for more details.
+        ## cluster storage to keep shared services. Currently supported types are "local", "gs", "s3". Default is "s3".
+        ## See installation docs for more details re other service storage options.
         - name: OPERETO_CLUSTER_STORAGE_TYPE
           value: "s3"
         - name: OPERETO_CLUSTER_STORAGE_NAME
