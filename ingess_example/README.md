@@ -39,7 +39,10 @@ Step 6: Install nginx-ingress using Helm
 helm install --name nginx-ingress stable/nginx-ingress --set rbac.create=true
 ```
 
-Step 7: Install Opereto Ingress service
+Step 7: Install Opereto Ingress service (opereto-lb)
+
+1. Replace ssl.example.com in the node_ingress.yaml with the relevant url
+1. Create the Ingress service
 ```console
 kubectl create -f node_ingress.yaml
 ```
