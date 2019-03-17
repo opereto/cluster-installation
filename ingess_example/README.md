@@ -7,7 +7,7 @@
 
 If you are not familiar with ingress yet, please read this first: [What is Ingress?](https://kubernetes.io/docs/concepts/services-networking/ingress/#what-is-ingress)
 
-## Create ingree service using Ngnix on GKE
+## Create ingress service using Ngnix on GKE
 
 Step 1: Create The Tiller Service Account
 ```console
