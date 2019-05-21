@@ -62,9 +62,9 @@ spec:
         # NOTE: you can increase this resources
         resources:
           requests:
-            memory: 16Gi
+            memory: 32Gi
           limits:
-            memory: 16Gi
+            memory: 32Gi
         env:
           - name: ES_JAVA_OPTS
             valueFrom:

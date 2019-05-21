@@ -2,6 +2,8 @@ kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
   name: db-ssd
+# ElasticSearch storage should be ssd based. Change the provisioner based on your Kubernetes provider/setup.
+# In this example, the provisioner is SSD disk in GKE
 provisioner: kubernetes.io/gce-pd
 parameters:
   type: pd-ssd

@@ -42,51 +42,38 @@ spec:
         - name: OPERETO_ES_DEBUG
           value: "0"
 
+        ## DO NOT REMOVE OR CHANGE THIS
         - name: OPERETO_POD_NAME
           valueFrom:
             fieldRef:
               fieldPath: metadata.name
 
-        ## Change this according to your elasticsearch operational requirements
+        ## Change this according to your elasticsearch operational requirements.
         - name: OPERETO_DB_SHARDS
           value: "5"
         - name: OPERETO_DB_REPLICA
           value: "1"
 
-        ## cluster storage to keep shared services. Currently supported types are "local", "gs", "s3". Default is "s3".
+        ### SHARED SERVICES STORAGE
+        ## cluster storage to keep shared services. Currently supported types are "local", "gs", "s3".
         ## See installation docs for more details re other service storage options.
         - name: OPERETO_CLUSTER_STORAGE_TYPE
-          value: "s3"
+          value: "gs"
         - name: OPERETO_CLUSTER_STORAGE_NAME
           valueFrom:
             secretKeyRef:
               name: node-cluster-storage
               key: OPERETO_CLUSTER_STORAGE_NAME
-        - name: OPERETO_CLUSTER_STORAGE_S3_AK
-          valueFrom:
-            secretKeyRef:
-              name: node-cluster-storage
-              key: OPERETO_CLUSTER_STORAGE_S3_AK
-        - name: OPERETO_CLUSTER_STORAGE_S3_SK
-          valueFrom:
-            secretKeyRef:
-              name: node-cluster-storage
-              key: OPERETO_CLUSTER_STORAGE_S3_SK
         - name: OPERETO_CLUSTER_SANDBOX_STORAGE_NAME
           valueFrom:
             secretKeyRef:
               name: node-cluster-storage
               key: OPERETO_CLUSTER_SANDBOX_STORAGE_NAME
-        - name: OPERETO_CLUSTER_SANDBOX_STORAGE_S3_AK
+        - name: OPERETO_CLUSTER_STORAGE_GS_CREDENTIALS
           valueFrom:
             secretKeyRef:
               name: node-cluster-storage
-              key: OPERETO_CLUSTER_SANDBOX_STORAGE_S3_AK
-        - name: OPERETO_CLUSTER_SANDBOX_STORAGE_S3_SK
-          valueFrom:
-            secretKeyRef:
-              name: node-cluster-storage
-              key: OPERETO_CLUSTER_SANDBOX_STORAGE_S3_SK
+              key: OPERETO_CLUSTER_STORAGE_GS_CREDENTIALS
 
         volumeMounts:
         - name: data
@@ -99,14 +86,13 @@ spec:
           name: redis
         resources:
           requests:
-            memory: 200Mi
-          limits:
             memory: 500Mi
+          limits:
+            memory: 1000Mi
         args: ["--appendonly", "yes", "--save", "900", "1", "--save", "30", "1"]
         volumeMounts:
         - name: data
           mountPath: /data
-
 
   volumeClaimTemplates:
   - metadata:
