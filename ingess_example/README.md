@@ -7,7 +7,8 @@
 If you are not familier with ingress yet, please read this first: [What is Ingress?](https://kubernetes.io/docs/concepts/services-networking/ingress/#what-is-ingress)
 This example assumes that you installed opereto cluster using the default namespace (e.g. opereto). Otherwise, please modify the namespace in all kubectl commands and yaml files given in this example.
 
-## Create ingree service using Ngnix on GKE
+
+## Create ingress service using Ngnix on GKE
 
 Step 1: Create The Tiller Service Account
 ```console
