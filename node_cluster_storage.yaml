@@ -4,12 +4,7 @@ metadata:
   name: node-cluster-storage
 type: Opaque
 data:
-  ### AWS S3
-  OPERETO_CLUSTER_STORAGE_NAME: ""
-  OPERETO_CLUSTER_STORAGE_S3_AK: ""
-  OPERETO_CLUSTER_STORAGE_S3_SK: ""
-  OPERETO_CLUSTER_SANDBOX_STORAGE_NAME: ""
-  OPERETO_CLUSTER_SANDBOX_STORAGE_S3_AK: ""
-  OPERETO_CLUSTER_SANDBOX_STORAGE_S3_SK: ""
-
+  OPERETO_CLUSTER_STORAGE_GS_CREDENTIALS: "[add base64 encoded string representation of the credentials json]"
+  OPERETO_CLUSTER_STORAGE_NAME: "[add base64 encoded bucket name here]"
+  OPERETO_CLUSTER_SANDBOX_STORAGE_NAME: "[add base64 encoded sandbox bucket name here (can be the same as above)]"
 

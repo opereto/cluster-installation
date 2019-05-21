@@ -9,4 +9,4 @@ data:
     bootstrap.memory_lock: false
     discovery.zen.ping.unicast.hosts: opereto-es
     discovery.zen.minimum_master_nodes: 1
-  ES_JAVA_OPTS: -Xms8000m -Xmx8000m
+  ES_JAVA_OPTS: -Xms16000m -Xmx16000m

@@ -3,6 +3,9 @@ kind: Ingress
 metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/enable-access-log: "false"
+    ## This is optional and relevant to GKE only
+    kubernetes.io/ingress.global-static-ip-name: "name_of_external_ip"
   name: opereto-lb
 spec:
   tls:
