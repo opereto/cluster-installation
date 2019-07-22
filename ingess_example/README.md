@@ -86,7 +86,6 @@ spec:
 
 Step 9: Add autoscaling to ingress controller and backend and increase the replica to more than 1 (optional but recommended)
 
-
 **nginx-ingress-controller service**:
 Add the external IP attached to the load balancer
 
@@ -95,6 +94,25 @@ spec:
   ...
       loadBalancerIP: 1.1.1.1
   
+```
+
+**nginx-ingress-default-backend service**:
+Make sure both 80 (http) and 443 (https) ports point to opereto service port 8080
+
+```console
+...
+spec:
+  clusterIP: 10.35.241.186
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 8080
+  - name: https
+    port: 443
+    protocol: TCP
+    targetPort: 8080
+    ...
 ```
 
 ### Troubleshooting
@@ -110,6 +128,7 @@ To display the ingress controller config:
 ```console
 kubectl -n opereto exec nginx-ingress-controller-7dbfc54c45-mt2kx -- cat nginx.conf
 ```
+
 
 Learn more about Nginx/GKE Ingress:
 1. https://docs.bitnami.com/kubernetes/how-to/configure-rbac-in-your-kubernetes-cluster/

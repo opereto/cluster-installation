@@ -33,6 +33,8 @@ spec:
         ## Please note that turning on debug modes significantly increases system logs volume and may decrease performance.
         - name: OPERETO_CLUSTER_DEBUG
           value: "0"
+        - name: OPERETO_CONTAINER_DEBUG
+          value: "0"
         - name: OPERETO_CYCLE_DEBUG
           value: "0"
         - name: OPERETO_TESTPLAN_DEBUG
