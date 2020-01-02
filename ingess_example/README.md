@@ -30,7 +30,11 @@ helm ls
 ```
 
 Step 5: Create a Kubernetes secret
+
 ```console
+cat domainname.crt > tls.key
+cat domainname.crt domainname.ca-bundle > tls.crt
+
 kubectl -n opereto create secret tls clustersecret --key /tmp/tls.key --cert /tmp/tls.crt
 ```
 
@@ -65,7 +69,7 @@ data:
   ssl_ciphers: EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH;
   ssl_session_cache: builtin:1000  shared:SSL:10m;
   ssl_session_timeout: 10m;
-  proxy-connect-timeout: "300"
+  proxy-connect-timeout: "75"
   proxy-read-timeout: "300"
   proxy-send-timeout: "300"
   proxy-set-headers: "opereto/custom-headers"
@@ -127,6 +131,8 @@ To display the ingress controller config:
 ```console
 kubectl -n opereto exec nginx-ingress-controller-7dbfc54c45-mt2kx -- cat nginx.conf
 ```
+
+To upgrade the nginx controller image, check the latest stable image at: https://github.com/kubernetes/ingress-nginx/releases
 
 
 Learn more about Nginx/GKE Ingress:
